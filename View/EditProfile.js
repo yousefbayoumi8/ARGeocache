@@ -21,7 +21,7 @@ export default function EditProfile() {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
-        <TouchableOpacity onPress={() => navigation.push('Profile')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Image
             source={require('../components/back.png')}
             style={{width: 35, height: 35, marginLeft: 2}}

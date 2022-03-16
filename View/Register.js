@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,61 +12,68 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-
-const Register= () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Register() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigation = useNavigation();
   return (
-    <View>
-        <View style={styles.headerStyle}>
-            <Text style={styles.headerTextStyle}>Create Your Profile</Text>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
+      <View style={styles.viewStyle}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <Image
+            source={require('../components/back.png')}
+            style={{width: 35, height: 35, marginLeft: 2}}
+          />
+        </TouchableOpacity>
+        <Text style={styles.textStyle}>Create Your Profile</Text>
+      </View>
+
+      <View style={styles.container}>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Username"
+            placeholderTextColor="#003f5c"
+            onChangeText={username => setUsername(username)}
+          />
         </View>
 
-
-    <View style={styles.container}>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Username"
-          placeholderTextColor="#003f5c"
-          onChangeText={(username) => setUsername(username)}
-        />
-      </View>
-
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Password"
+            placeholderTextColor="#003f5c"
+            secureTextEntry={true}
+            onChangeText={password => setPassword(password)}
           />
+        </View>
+
+        <TouchableOpacity
+          style={styles.SubmitButton}
+          onPress={() => {
+            alert('New Profile Created');
+          }}>
+          <Text style={{fontWeight: 'bold', color: 'black'}}>Submit</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity style={styles.SubmitButton} onPress={()=>{alert("New Profile Created")}}>
-        <Text style={{fontWeight: "bold", color: "black"}}>Submit</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-
-
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
     marginTop: 300,
-
   },
   inputView: {
-    backgroundColor: "#96DED1",
-    width: "70%",
+    backgroundColor: '#96DED1',
+    width: '70%',
     height: 45,
     marginBottom: 20,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
 
   TextInput: {
@@ -76,29 +83,26 @@ const styles = StyleSheet.create({
   },
 
   SubmitButton: {
-    width: "40%",
+    width: '40%',
     height: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#2AAA8A",
-
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#2AAA8A',
   },
 
-  headerTextStyle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-    marginLeft: 40,
-    marginTop: 5,
+  textStyle: {
+    fontSize: 25,
+    fontWeight: '800',
+    color: '#04120f',
+    flex: 2,
+    marginLeft: 25,
   },
-  headerStyle: {
-    backgroundColor: "#2AAA8A",
-    flexDirection: "row",
-    width: "100%",
-    height: 60,
-    justifyContent: "flex-start",
-    alignItems: "center",
-   },
-  });
-
-export default Register;
+  viewStyle: {
+    backgroundColor: '#29b89e',
+    width: '100%',
+    height: 50,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
