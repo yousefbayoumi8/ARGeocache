@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useAuth } from "../providers/AuthProvider";
+import { Alert } from "react-native";
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +20,19 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const { user, signUp, signIn } = useAuth();
+
+  const onPressSignUp = async () => {
+      try {
+        await signUp(username, password);
+        signIn(username, password);
+        navigation.navigate('MainMenu');
+        alert('New Profile Created, you are now signed in');
+      } catch (error) {
+        Alert.alert(`Failed to sign up: ${error.message}`);
+      }
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
@@ -52,9 +67,7 @@ export default function Register() {
 
         <TouchableOpacity
           style={styles.SubmitButton}
-          onPress={() => {
-            alert('New Profile Created');
-          }}>
+          onPress={onPressSignUp}>
           <Text style={{fontWeight: 'bold', color: 'black'}}>Submit</Text>
         </TouchableOpacity>
       </View>
