@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { useAuth } from "../providers/AuthProvider.js";
+import { Alert } from "react-native";
 import {
   SafeAreaView,
   View,
@@ -11,16 +13,30 @@ import {useNavigation} from '@react-navigation/native';
 
 export default function MainMenu() {
   const navigation = useNavigation();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { user, signOut } = useAuth();
+  const onPressSignOut = async () => {
+        console.log("Press sign out");
+        try {
+          await signOut(username, password);
+          navigation.navigate('HomeScreen');
+        } catch (error) {
+          console.log("Failed to sign out");
+          Alert.alert(`Failed to sign in: ${error.message}`);
+        }
+    };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={onPressSignOut}>
           <Image
             source={require('../components/back.png')}
             style={{width: 35, height: 35, marginLeft: 2}}
           />
         </TouchableOpacity>
-        <Text style={styles.textStyle}>Welcome User_007</Text>
+        <Text style={styles.textStyle}>Welcome </Text>
       </View>
 
       <View style={styles.CameraContainer}>

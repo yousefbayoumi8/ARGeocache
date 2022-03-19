@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useAuth } from "../providers/AuthProvider.js";
+import { Alert } from "react-native";
 import {
   SafeAreaView,
   ScrollView,
@@ -16,7 +18,20 @@ import {useNavigation} from '@react-navigation/native';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { user, signUp, signIn } = useAuth();
   const navigation = useNavigation();
+
+  const onPressSignIn = async () => {
+      console.log("Press sign in");
+      try {
+        await signIn(username, password);
+        navigation.navigate('MainMenu');
+      } catch (error) {
+        console.log("Failed to sign in");
+        Alert.alert(`Failed to sign in: ${error.message}`);
+      }
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
@@ -50,9 +65,7 @@ export default function Login() {
 
         <TouchableOpacity
           style={styles.SubmitButton}
-          onPress={() => {
-            navigation.navigate('MainMenu');
-          }}>
+          onPress={onPressSignIn}>
           <Text style={{fontWeight: 'bold', color: 'black'}}>Enter</Text>
         </TouchableOpacity>
       </View>
