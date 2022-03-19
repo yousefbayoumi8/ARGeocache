@@ -36,12 +36,12 @@ export default function MainMenu() {
             style={{width: 35, height: 35, marginLeft: 2}}
           />
         </TouchableOpacity>
-        <Text style={styles.textStyle}>Welcome </Text>
+        <Text style={styles.textStyle}>Welcome</Text>
       </View>
 
       <View style={styles.CameraContainer}>
         <Image
-          source={require('../components/CameraButton.png')}
+          source={require('../components/WelcomeIcon.png')}
           style={{
             height: 225,
             width: 225,
