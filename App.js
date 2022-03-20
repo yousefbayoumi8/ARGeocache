@@ -8,6 +8,8 @@ import Register from './View/Register';
 import MainMenu from './View/MainMenu';
 import Profile from './View/Profile';
 import EditProfile from './View/EditProfile';
+import MapView from "react-native-maps";
+import Geocaching from './View/Geocaching';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +26,7 @@ export default function App() {
             <Stack.Screen name="MainMenu" component={MainMenu} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="Geocaching" component={Geocaching} />
           </Stack.Navigator>
         </NavigationContainer>
     </AuthProvider>

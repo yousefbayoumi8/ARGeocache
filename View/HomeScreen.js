@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import { useAuth } from "../providers/AuthProvider.js";
 import {
   SafeAreaView,
   View,
@@ -11,6 +12,9 @@ import {useNavigation} from '@react-navigation/native';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { user, signOut } = useAuth();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
