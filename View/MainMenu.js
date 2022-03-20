@@ -31,10 +31,7 @@ export default function MainMenu() {
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
         <TouchableOpacity onPress={onPressSignOut}>
-          <Image
-            source={require('../components/back.png')}
-            style={{width: 35, height: 35, marginLeft: 2}}
-          />
+          <Text style={{fontWeight: 'bold', color: 'black'}}>Logout</Text>
         </TouchableOpacity>
         <Text style={styles.textStyle}>Welcome</Text>
       </View>
@@ -61,7 +58,10 @@ export default function MainMenu() {
           <Text style={{fontWeight: 'bold', color: 'black'}}>Profile</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.MapStyle} activeOpacity={0.5}>
+        <TouchableOpacity
+          style={styles.MapStyle}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate('Geocaching')}>
           <Image
             source={require('../components/Map.png')}
             style={styles.ImageIconStyle}
