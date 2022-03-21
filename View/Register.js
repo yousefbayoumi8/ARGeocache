@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { useAuth } from "../providers/AuthProvider";
 import { Alert } from "react-native";
+import Realm from "realm";
+import app from "../realmApp";
 import {
   SafeAreaView,
   ScrollView,
@@ -14,22 +16,34 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSelected, setSelection] = useState(false);
 
   const navigation = useNavigation();
   const { user, signUp, signIn } = useAuth();
 
   const onPressSignUp = async () => {
       try {
-        await signUp(username, password);
-        signIn(username, password);
-        navigation.navigate('MainMenu');
-        alert('New Profile Created, you are now signed in');
+        if(password === confirmPassword){
+            if(password.length > 7){
+                await signUp(username, password, isSelected);
+                signIn(username, password);
+                navigation.navigate('MainMenu');
+                alert('New Profile Created, you are now signed in');
+            }
+            else{
+                Alert.alert('Password must be at least 8 characters long');
+            }
+        }
+        else{
+            Alert.alert('Passwords do not match, please try again');
+        }
       } catch (error) {
         Alert.alert(`Failed to sign up: ${error.message}`);
       }
@@ -114,7 +128,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2AAA8A',
   },
-
   textStyle: {
     fontSize: 25,
     fontWeight: '800',
