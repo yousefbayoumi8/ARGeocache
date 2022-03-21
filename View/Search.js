@@ -14,13 +14,24 @@ import {useNavigation} from '@react-navigation/native';
 
 export default function Search({clicked, searchPhrase, setSearchPhrase, setCLicked}) {
   const navigation = useNavigation();
+  //const [username] = useState('');
+
+  const onPressSearchUsers = async() => {
+    console.log("Searching for users...");
+    try {
+
+    } catch (error) {
+    }
+  };
+
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
           <TouchableOpacity onPress={() => navigation.navigate('MainMenu')}>
           <Image
             source={require('../components/back.png')}
-            style={{width: 35, height: "75%", margin: 2, flexDirection: "row", justifyContent: "flex-start"}}
+            style={{height: "75%", aspectRatio: 1, margin: 2, flexDirection: "row", justifyContent: "flex-start"}}
           />
           </TouchableOpacity>
 
@@ -31,10 +42,10 @@ export default function Search({clicked, searchPhrase, setSearchPhrase, setCLick
             onChangeText={setSearchPhrase}
           />
 
-          <TouchableOpacity onPress={''}>
+          <TouchableOpacity onPress={onPressSearchUsers}>
           <Image
             source={require('../components/Search.png')}
-            style={{width: 35, height: 35, margin: 5, flexDirection: "row", justifyContent: "flex-end"}}
+            style={{height: '75%', aspectRatio: 1, margin: 5, flexDirection: "row", justifyContent: "flex-end"}}
           />
           </TouchableOpacity>
       </View>
