@@ -7,7 +7,6 @@ const AuthContext = React.createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
-  const [projectData, setProjectData] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -23,7 +22,7 @@ const AuthProvider = ({ children }) => {
 
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
-      const users = userRealm.objects("User");
+      const users = userRealm.objects("Users");
     });
 
     return () => {
@@ -53,6 +52,13 @@ const AuthProvider = ({ children }) => {
     user.logOut();
     setUser(null);
   };
+
+  //const updatePrivacy = async (username, privacy) => {
+  //  realm.write(() => {
+  //      user.privacy = privacy;
+  //  }
+  //  console.log('User')
+  //}
 
   return (
     <AuthContext.Provider
