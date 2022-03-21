@@ -69,7 +69,10 @@ export default function MainMenu() {
           <Text style={{fontWeight: 'bold', color: 'black'}}>Map</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.SearchStyle} activeOpacity={0.5}>
+        <TouchableOpacity
+          style={styles.SearchStyle}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate('Search')}>
           <Image
             source={require('../components/Search.png')}
             style={styles.ImageIconStyle}
