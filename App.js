@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { AuthProvider } from "./providers/AuthProvider.js";
@@ -10,9 +11,10 @@ import Profile from './View/Profile';
 import EditProfile from './View/EditProfile';
 import MapView from "react-native-maps";
 import Geocaching from './View/Geocaching';
+import Geolocation from '@react-native-community/geolocation';
 
 const Stack = createNativeStackNavigator();
-
+LogBox.ignoreAllLogs();
 export default function App() {
   return (
     <AuthProvider>
