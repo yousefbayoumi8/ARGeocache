@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#04120f',
     flex: 2,
-    marginLeft: 25,
   },
   viewStyle: {
     backgroundColor: '#29b89e',

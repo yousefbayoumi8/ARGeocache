@@ -6,6 +6,7 @@ const AuthContext = React.createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
+  //const [userGeocaches, setGeocaches] = useState([]);
   const realmRef = useRef(null);
 
   useEffect(() => {
@@ -23,6 +24,17 @@ const AuthProvider = ({ children }) => {
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const users = userRealm.objects("Users");
+      //const myGeocaches = { name: "My Geocaches", partition: `geocache=${user.id}` };
+      //setGeocaches([myGeocaches]);
+
+      //users.addListener(() => {
+      //  if (users.length === 0) {
+      //      setGeocaches([myGeocaches]);
+      //  } else {
+      //      const { ownsCache } = users[0];
+      //      setGeocaches([...ownsCache]);
+      //  }
+      //});
     });
 
     return () => {
@@ -30,6 +42,7 @@ const AuthProvider = ({ children }) => {
       if (userRealm) {
         userRealm.close();
         realmRef.current = null;
+      //  setGeocaches([]);
       }
     };
   }, [user]);
@@ -53,6 +66,8 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  //const deleteAccount = async
+
   //const updatePrivacy = async (username, privacy) => {
   //  realm.write(() => {
   //      user.privacy = privacy;
@@ -67,6 +82,7 @@ const AuthProvider = ({ children }) => {
         signIn,
         signOut,
         user,
+        //userGeocaches,
       }}
     >
       {children}

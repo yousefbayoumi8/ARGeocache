@@ -22,7 +22,7 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.container}>
-        <Image source={require('../components/WelcomeIcon.png')} />
+        <Image source={require('../components/WelcomeIcon.png')} style={styles.ImageIconStyle} />
 
         <TouchableOpacity
           style={styles.LoginButton}
@@ -71,6 +71,13 @@ const styles = StyleSheet.create({
     color: '#04120f',
     flex: 2,
     marginLeft: 100,
+  },
+  ImageIconStyle: {
+      padding: 15,
+      margin: 5,
+      height: 250,
+      width: 250,
+      resizeMode: 'stretch',
   },
 
   viewStyle: {
