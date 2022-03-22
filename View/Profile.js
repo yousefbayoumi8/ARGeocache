@@ -51,6 +51,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 0.5,
     alignItems: 'center',
     backgroundColor: '#fffff',
     marginTop: 30,
