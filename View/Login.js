@@ -75,9 +75,10 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    marginTop: 300,
+    marginTop: 275,
   },
   inputView: {
     backgroundColor: '#96DED1',
