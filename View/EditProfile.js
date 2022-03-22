@@ -12,12 +12,34 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import CheckBox from '@react-native-community/checkbox';
 
 export default function EditProfile() {
   const [username, setNewUsername] = useState('');
   const [password, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSelected, setSelection] = useState(false);
   const navigation = useNavigation();
+
+  const onPressSignUp = async () => {
+    try {
+        if(password === confirmPassword){
+            if(password.length > 7){
+                await user.functions.updateProfile(username, password, isSelected);
+                navigation.navigate('MainMenu');
+                alert('Profile successfully updated');
+            }
+            else{
+                Alert.alert('Password must be at least 8 characters long');
+            }
+        }
+        else{
+            Alert.alert('Passwords do not match, please try again');
+        }
+    } catch (error) {
+        Alert.alert(`Failed to sign up: ${error.message}`);
+    }
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
@@ -70,12 +92,28 @@ export default function EditProfile() {
           />
         </View>
 
+        <View style={styles.checkboxContainer}>
+            <Text style={styles.label}>Would you like your account to be private?</Text>
+                <CheckBox
+                        value={isSelected}
+                        onValueChange={setSelection}
+                        style={styles.checkbox}
+                />
+        </View>
+
         <TouchableOpacity
           style={styles.SaveButton}
           onPress={() => {
             alert('Changes Saved');
           }}>
           <Text style={{fontWeight: 'bold', color: 'black'}}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.DeleteButton}
+            onPress={() => {
+                alert('Changes Saved');
+            }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>Delete Account</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -108,8 +146,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2AAA8A',
+    marginBottom: 20,
   },
-
+  DeleteButton: {
+      width: '40%',
+      height: 30,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#cc0000',
+      marginBottom: 20,
+  },
   textStyle: {
     fontSize: 25,
     fontWeight: '800',
@@ -124,5 +170,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: "column",
+    marginBottom: 20,
+  },
+  checkbox: {
+    alignSelf: "center",
   },
 });

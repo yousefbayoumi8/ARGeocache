@@ -80,6 +80,13 @@ const styles = StyleSheet.create({
     flex: 2,
     marginLeft: 100,
   },
+  ImageIconStyle: {
+      padding: 15,
+      margin: 5,
+      height: 250,
+      width: 250,
+      resizeMode: 'stretch',
+  },
 
   viewStyle: {
     backgroundColor: '#29b89e',

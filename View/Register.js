@@ -23,7 +23,6 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isSelected, setSelection] = useState(false);
 
   const navigation = useNavigation();
   const { user, signUp, signIn } = useAuth();
@@ -32,8 +31,9 @@ export default function Register() {
       try {
         if(password === confirmPassword){
             if(password.length > 7){
-                await signUp(username, password, isSelected);
+                await signUp(username, password);
                 signIn(username, password);
+                await user.functions.insertUser(username, password);
                 navigation.navigate('MainMenu');
                 alert('New Profile Created, you are now signed in');
             }
