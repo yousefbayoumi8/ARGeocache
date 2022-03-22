@@ -22,7 +22,7 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.container}>
-        <Image source={require('../components/WelcomeIcon.png')} />
+        <Image source={require('../components/WelcomeIcon.png')} style={styles.image}/>
 
         <TouchableOpacity
           style={styles.LoginButton}
@@ -42,6 +42,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     marginTop: 30,
@@ -63,6 +64,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2AAA8A',
     marginTop: 10,
+  },
+  
+  image: {
+   flex: 0.75,
+   width: 400,
+   height: 400,
+   resizeMode: 'contain',
   },
 
   textStyle: {
