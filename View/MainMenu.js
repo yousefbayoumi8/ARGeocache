@@ -42,7 +42,7 @@ export default function MainMenu() {
           style={{
             height: 225,
             width: 225,
-            resizeMode: 'stretch',
+            resizeMode: 'contain',
           }}
         />
       </View>
@@ -83,12 +83,14 @@ export default function MainMenu() {
 
 const styles = StyleSheet.create({
   CameraContainer: {
+    flex: 1.5,
     backgroundColor: '#fff',
     alignItems: 'center',
     marginTop: 70,
   },
 
   ProfileContainer: {
+    flex: 0.5,
     flexDirection: 'row',
     backgroundColor: '#fff',
     marginHorizontal: 10,
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
   },
 
   ImageIconStyle: {
+    flex: 1,
     padding: 15,
     margin: 5,
     height: 25,
