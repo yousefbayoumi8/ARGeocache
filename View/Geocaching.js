@@ -26,6 +26,8 @@ export default function Geocaching() {
   const [currentLatitude, setCurrentLatitude] = useState(45.94995093187056);
   const [locationStatus, setLocationStatus] = useState('');
   const [geocacheList, setGeocacheList] = useState([]);
+  const [geoLong, setGeoLong] = useState(0);
+  const [geoLat, setGeoLat] = useState(0);
   watchID: number = null;
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -48,23 +50,22 @@ export default function Geocaching() {
         console.warn(err);
       }
     };
+    const getCoordinates = async () => {
+      try {
+         const geocacheList = await user.functions.getGeocacheCoordinates();
+         setGeocacheList(geocacheList);
+         setGeoLat(geocacheList[0].coordinate.latitude);
+         setGeoLong(geocacheList[0].coordinate.longitude);
+      } catch (err) {
+         console.warn(err);
+      }
+    };
     requestLocationPermission();
     getCoordinates();
     return () => {
       Geolocation.clearWatch(watchID);
     };
   }, []);
-
-  const getCoordinates = async () => {
-    try {
-        const geocacheList = await user.functions.getGeocacheCoordinates();
-        setGeocacheList(geocacheList);
-        console.log('printing coordinates');
-        console.log(geocacheList);
-    } catch (err) {
-        console.warn(err);
-    }
-  };
 
   const getOneTimeLocation = () => {
     setLocationStatus('Getting Location ...');
@@ -136,14 +137,15 @@ export default function Geocaching() {
           longitude: currentLongitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}>
+        }}
+        showsUserLocation={true}>
         <Marker
-          description="You are here"
-          coordinate={{latitude: currentLatitude, longitude: currentLongitude}}>
-          <Image
-            source={require('../components/Profile.png')}
-            style={styles.ImageIconStyle}
-          />
+            description="geor"
+            coordinate={{latitude: geoLat, longitude: geoLong}}>
+            <Image
+                source={require('../components/pin.png')}
+                style={styles.ImageIconStyle}
+            />
         </Marker>
       </MapView>
     </View>
@@ -167,4 +169,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  ImageIconStyle: {
+      flex: 1,
+      padding: 15,
+      margin: 5,
+      height: 25,
+      width: 25,
+      resizeMode: 'stretch',
+    },
 });
