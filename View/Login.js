@@ -25,7 +25,7 @@ export default function Login() {
       console.log("Press sign in");
       try {
         await signIn(username, password);
-        navigation.navigate('MainMenu');
+        navigation.navigate('MainMenu', {username: username});
       } catch (error) {
         console.log("Failed to sign in");
         Alert.alert(`Failed to sign in: ${error.message}`);

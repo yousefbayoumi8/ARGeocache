@@ -16,7 +16,7 @@ export default function Profile() {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={styles.viewStyle}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainMenu')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainMenu', {username: username})}>
           <Image
             source={require('../components/back.png')}
             style={{width: 35, height: 35, marginLeft: 2}}
