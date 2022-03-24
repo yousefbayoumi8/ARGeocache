@@ -33,6 +33,7 @@ export default function Geocaching({route}) {
   const [geoLat, setGeoLat] = useState(0);
   watchID: number = null;
   useEffect(() => {
+
     const requestLocationPermission = async () => {
       try {
         const granted = await PermissionsAndroid.request(
@@ -67,6 +68,28 @@ export default function Geocaching({route}) {
       Geolocation.clearWatch(watchID);
     };
   }, []);
+
+  useEffect(() => {
+     const pickupGeocache = async () => {
+        //if(Math.sqrt(Math.pow(currentLatitude-geoLat ,2) +Math.pow(currentLongitude-geoLong,2) ) <= 0.001){
+        try{
+            console.log("picking up geocache");
+            console.log(username);
+            console.log(geocacheID);
+            await user.functions.pickUpGeocache(username, geocacheID);
+            await user.functions.updateGeocache(geocacheID, 0, 0);
+            Alert.alert("Geocache collected!");
+        } catch (err) {
+            console.warn(err);
+        }
+              //}
+              //else{
+              //    Alert.alert("Not in range of geocache");
+              //}
+     }
+     pickupGeocache();
+  }, [geocacheID]);
+
 
   const getOneTimeLocation = () => {
     setLocationStatus('Getting Location ...');
@@ -103,26 +126,10 @@ export default function Geocaching({route}) {
     );
   };
 
-  const pickupGeocache = async event => {
-    //if(Math.sqrt(Math.pow(currentLatitude-geoLat ,2) +Math.pow(currentLongitude-geoLong,2) ) <= 0.001){
-        try{
-            console.log("picking up geocache");
-            console.log(username);
-            console.log(geocacheID);
-            await user.functions.pickUpGeocache(username, geocacheID);
-            await user.functions.updateGeocache(geocacheID, 0, 0);
-        } catch (err) {
-           console.warn(err);
-        }
-    //}
-    //else{
-    //    Alert.alert("Not in range of geocache");
-    //}
-  }
   return (
     <View style={styles.body}>
       <View style={styles.viewStyle}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainMenu')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainMenu', {username: username})}>
           <Image
             source={require('../components/back.png')}
             style={{width: 35, height: 35, marginLeft: 2}}
@@ -139,7 +146,8 @@ export default function Geocaching({route}) {
           longitudeDelta: 0.0421,
         }}
         showsUserLocation={true}>
-        {geocacheList.map((item) => {return(
+        {geocacheList.map((item) => {
+        return(
             <Marker
                 key={item.name}
                 title={item.name}
@@ -148,12 +156,21 @@ export default function Geocaching({route}) {
                     longitude: item.coordinate.longitude,
                 }}
                 onPress={() => {
+                    console.log(item.geocache_id);
                     setGeocacheID(item.geocache_id);
-                    pickupGeocache();
                 }}
-            />)
+            />
+            )
         })}
       </MapView>
+      <View style={styles.buttonCallout}>
+        <TouchableOpacity
+            style={[styles.touchable]}
+            onPress={() => console.log("press")}
+            >
+            <Text style={styles.touchableText}>Place Geocache</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -183,4 +200,23 @@ const styles = StyleSheet.create({
       width: 25,
       resizeMode: 'stretch',
     },
+     buttonCallout: {
+         flex: 1,
+         flexDirection:'row',
+         position:'absolute',
+         bottom:10,
+         alignSelf: "center",
+         justifyContent: "space-between",
+         backgroundColor: "transparent",
+         borderWidth: 0.5,
+         borderRadius: 20
+       },
+      touchable: {
+        backgroundColor: "lightblue",
+        padding: 10,
+        margin: 10
+      },
+      touchableText: {
+        fontSize: 24
+      },
 });
