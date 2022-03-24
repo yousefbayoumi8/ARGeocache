@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import Realm, {User} from 'realm';
 import app from '../realmApp';
 import {useAuth} from '../providers/AuthProvider';
+import { Alert } from "react-native";
 import {
   SafeAreaView,
   View,
@@ -18,14 +19,16 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 
-export default function Geocaching() {
+export default function Geocaching({route}) {
   LogBox.ignoreAllLogs();
   const navigation = useNavigation();
   const {user} = useAuth();
+  const { username } = route.params;
   const [currentLongitude, setCurrentLongitude] = useState(-66.64159932959872);
   const [currentLatitude, setCurrentLatitude] = useState(45.94995093187056);
   const [locationStatus, setLocationStatus] = useState('');
   const [geocacheList, setGeocacheList] = useState([]);
+  const [geocacheID, setGeocacheID] = useState('');
   const [geoLong, setGeoLong] = useState(0);
   const [geoLat, setGeoLat] = useState(0);
   watchID: number = null;
@@ -54,8 +57,6 @@ export default function Geocaching() {
       try {
          const geocacheList = await user.functions.getGeocacheCoordinates();
          setGeocacheList(geocacheList);
-         setGeoLat(geocacheList[0].coordinate.latitude);
-         setGeoLong(geocacheList[0].coordinate.longitude);
       } catch (err) {
          console.warn(err);
       }
@@ -69,23 +70,13 @@ export default function Geocaching() {
 
   const getOneTimeLocation = () => {
     setLocationStatus('Getting Location ...');
-    console.log('Getting location...');
     Geolocation.getCurrentPosition(
-      //Will give you the current location
       position => {
         setLocationStatus('You are Here');
-        console.log('You are here');
         const currentLongitude = position.coords.longitude;
-        //getting the Longitude from the location json
         const currentLatitude = position.coords.latitude;
-        //getting the Latitude from the location json
         setCurrentLongitude(currentLongitude);
-        console.log('You are here');
-        //Setting state Longitude to re re-render the Longitude Text
         setCurrentLatitude(currentLatitude);
-        console.log(currentLongitude);
-        console.log(currentLatitude);
-        //Setting state Latitude to re re-render the Longitude Text
       },
       error => {
         console.log('error');
@@ -93,7 +84,6 @@ export default function Geocaching() {
       },
       {enableHighAccuracy: true, timeout: 30000, maximumAge: 2000},
     );
-    console.log('here');
     console.log(currentLongitude);
   };
 
@@ -101,16 +91,10 @@ export default function Geocaching() {
     watchID = Geolocation.watchPosition(
       position => {
         setLocationStatus('You are Here');
-        //Will give you the location on location change
-        console.log(position);
         const currentLongitude = position.coords.longitude;
-        //getting the Longitude from the location json
         const currentLatitude = position.coords.latitude;
-        //getting the Latitude from the location json
         setCurrentLongitude(currentLongitude);
-        //Setting state Longitude to re re-render the Longitude Text
         setCurrentLatitude(currentLatitude);
-        //Setting state Latitude to re re-render the Longitude Text
       },
       error => {
         setLocationStatus(error.message);
@@ -119,6 +103,22 @@ export default function Geocaching() {
     );
   };
 
+  const pickupGeocache = async event => {
+    //if(Math.sqrt(Math.pow(currentLatitude-geoLat ,2) +Math.pow(currentLongitude-geoLong,2) ) <= 0.001){
+        try{
+            console.log("picking up geocache");
+            console.log(username);
+            console.log(geocacheID);
+            await user.functions.pickUpGeocache(username, geocacheID);
+            await user.functions.updateGeocache(geocacheID, 0, 0);
+        } catch (err) {
+           console.warn(err);
+        }
+    //}
+    //else{
+    //    Alert.alert("Not in range of geocache");
+    //}
+  }
   return (
     <View style={styles.body}>
       <View style={styles.viewStyle}>
@@ -139,14 +139,20 @@ export default function Geocaching() {
           longitudeDelta: 0.0421,
         }}
         showsUserLocation={true}>
-        <Marker
-            description="geor"
-            coordinate={{latitude: geoLat, longitude: geoLong}}>
-            <Image
-                source={require('../components/pin.png')}
-                style={styles.ImageIconStyle}
-            />
-        </Marker>
+        {geocacheList.map((item) => {return(
+            <Marker
+                key={item.name}
+                title={item.name}
+                coordinate={{
+                    latitude: item.coordinate.latitude,
+                    longitude: item.coordinate.longitude,
+                }}
+                onPress={() => {
+                    setGeocacheID(item.geocache_id);
+                    pickupGeocache();
+                }}
+            />)
+        })}
       </MapView>
     </View>
   );

@@ -6,6 +6,7 @@ const AuthContext = React.createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
+  const [username, setUsername] = useState('');
   //const [userGeocaches, setGeocaches] = useState([]);
   const realmRef = useRef(null);
 
@@ -24,17 +25,7 @@ const AuthProvider = ({ children }) => {
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const users = userRealm.objects("Users");
-      //const myGeocaches = { name: "My Geocaches", partition: `geocache=${user.id}` };
-      //setGeocaches([myGeocaches]);
 
-      //users.addListener(() => {
-      //  if (users.length === 0) {
-      //      setGeocaches([myGeocaches]);
-      //  } else {
-      //      const { ownsCache } = users[0];
-      //      setGeocaches([...ownsCache]);
-      //  }
-      //});
     });
 
     return () => {
@@ -51,6 +42,7 @@ const AuthProvider = ({ children }) => {
     const creds = Realm.Credentials.emailPassword(email, password);
     const newUser = await app.logIn(creds);
     setUser(newUser);
+    setUsername(newUser.username);
   };
 
   const signUp = async (email, password) => {

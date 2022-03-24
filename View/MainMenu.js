@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-export default function MainMenu() {
+export default function MainMenu({route}) {
   const navigation = useNavigation();
-  const [username, setUsername] = useState('');
+  const { username } = route.params;
   const [password, setPassword] = useState('');
   const { user, signOut } = useAuth();
   const onPressSignOut = async () => {
         console.log("Press sign out");
+        console.log(username);
         try {
           await signOut(username, password);
           navigation.navigate('HomeScreen');
@@ -61,7 +62,7 @@ export default function MainMenu() {
         <TouchableOpacity
           style={styles.MapStyle}
           activeOpacity={0.5}
-          onPress={() => navigation.navigate('Geocaching')}>
+          onPress={() => navigation.navigate('Geocaching', {username: username})}>
           <Image
             source={require('../components/Map.png')}
             style={styles.ImageIconStyle}
